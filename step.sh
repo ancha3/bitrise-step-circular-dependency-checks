@@ -9,6 +9,18 @@ then
     npm install --prefix $THIS_SCRIPT_DIR madge --save
 fi
 
+if [[ ! -f ${dir_path} ]]
+then
+    echo "Error: ${dir_path} does not exist"
+    ls -lort
+fi
+
+if [[ ! -f ${ts_config_path} ]]
+then
+    echo "Error: ${ts_config_path} does not exist"
+    ls -lort
+fi
+
 RESULTS=$($THIS_SCRIPT_DIR/checkCircularDependency.js "${dir_path}" "${ts_config_path}")
 
 TOTAL_CIRCULAR_DEPENDENCIES_COUNT=0
@@ -32,7 +44,7 @@ if [ ! -f "quality_report.txt" ]; then
     printf "QUALITY REPORT\n\n\n" > quality_report.txt
 fi
 
-printf ">>>>>>>>>>  CURRENT TAGGED FILES  <<<<<<<<<<\n" >> quality_report.txt
+printf ">>>>>>>>>>  CURRENT CIRCULAR DEPENDENCY REPORT  <<<<<<<<<<\n" >> quality_report.txt
 printf "Directory path: $dir_path \n" >> quality_report.txt
 printf "TS Config file path: $ts_config_path \n" >> quality_report.txt
 printf "Total Circular dependencies count threshold: $circular_dep_count_threshold \n" >> quality_report.txt
