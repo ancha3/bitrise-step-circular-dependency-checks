@@ -61,7 +61,17 @@ inputs:
         Either a path to a tsconfig file or an object containing the config
       is_expand: false
       is_required: true
-outputs:
-  - CIRULAR_DEPENDENCY_LIST:
+  - circular_dep_count_threshold: 0
     opts:
-      title: "List containing circular dependencies in the build"
+      title: "Circular dependency count threshold"
+      summary: "Threshold number set, when set if the count is greater, step will fail"
+      description: |
+        Set this key to specify the threshold of circular dependencies allowed in the build.
+        If it exceeds the threshold, the step will fail. Set to 0 if you do not want any 
+        circular dependdencies in your build.
+      is_expand: false
+      is_required: true
+outputs:
+  - TOTAL_CIRCULAR_DEPENDENCIES_COUNT:
+    opts:
+      title: "Total count of circular dependencies in the build"

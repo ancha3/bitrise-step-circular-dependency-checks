@@ -35,4 +35,4 @@ madge(path, config).then(res => {
     console.log(result);
     return result;
   }
-});
+}).catch(error => console.log('ERROR', error));
