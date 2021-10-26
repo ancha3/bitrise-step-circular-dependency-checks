@@ -12,13 +12,13 @@ fi
 if [[ ! -f ${dir_path} ]]
 then
     echo "Error: ${dir_path} does not exist"
-    ls -lort
+    exit 1
 fi
 
 if [[ ! -f ${ts_config_path} ]]
 then
     echo "Error: ${ts_config_path} does not exist"
-    ls -lort
+    exit 1
 fi
 
 RESULTS=$($THIS_SCRIPT_DIR/checkCircularDependency.js "${dir_path}" "${ts_config_path}")

@@ -13,7 +13,6 @@ const config = {
 const buildCircularDependency = nodes => {
   let circularDependencyList = '';
   nodes.forEach(node => {
-    console.log('test22', node.length);
     if (Array.isArray(node)) {
       const nodeLength = node.length - 1;
       const line = node.reduce((resultString, filename, currIndex, fileList) =>
@@ -31,7 +30,6 @@ const buildCircularDependency = nodes => {
 madge(path, config).then(res => {
   const resultList = res.circular();
   if (resultList.length > 0) {
-    console.log('test1', resultList.length);
     const result = buildCircularDependency(resultList);
 
     console.log(result);
