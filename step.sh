@@ -24,17 +24,29 @@ fi
 RESULTS=$($THIS_SCRIPT_DIR/checkCircularDependency.js "${dir_path}" "${ts_config_path}")
 
 TOTAL_CIRCULAR_DEPENDENCIES_COUNT=0
+
+FORMATTED_REPORT_NAME=$(echo $report_name | tr '[:upper:]' '[:lower:]')
+FILENAME=circular_dependencies_${FORMATTED_REPORT_NAME}_list.txt
+
 for i in ${RESULTS//,/ }
 do
-  if [ ! -f "list_circular_dependencies.txt" ]; then
-    printf "Circular Dependencies\n\n\n" > list_circular_dependencies.txt
+  if [ ! -f "$FILENAME" ]; then
+    printf "Circular Dependencies\n\n\n" > $FILENAME
   fi
-  echo "$i" >> list_circular_dependencies.txt
+  echo "$i" >> $FILENAME
   TOTAL_CIRCULAR_DEPENDENCIES_COUNT=`expr $TOTAL_CIRCULAR_DEPENDENCIES_COUNT + 1`
 done
 
-if [ -f "list_circular_dependencies.txt" ]; then
-    cp list_circular_dependencies.txt $BITRISE_DEPLOY_DIR/list_circular_dependencies.txt
+# if [ -f "$FILENAME" ]; then
+#     cp $FILENAME $BITRISE_DEPLOY_DIR/$FILENAME
+# fi
+
+if [ -f "$FILENAME" ]; then
+    if [ -f "${BITRISE_DEPLOY_DIR}/circular_dependency_list.zip" ]; then
+        cp $BITRISE_DEPLOY_DIR/circular_dependency_list.zip circular_dependency_list.zip
+    fi
+    zip circular_dependency_list.zip $FILENAME
+    cp circular_dependency_list.zip $BITRISE_DEPLOY_DIR/circular_dependency_list.zip
 fi
 
 
@@ -44,12 +56,12 @@ if [ ! -f "quality_report.txt" ]; then
     printf "QUALITY REPORT\n\n\n" > quality_report.txt
 fi
 
-printf ">>>>>>>>>>  CURRENT CIRCULAR DEPENDENCY REPORT  <<<<<<<<<<\n" >> quality_report.txt
+printf ">>>>>>>>>>  CURRENT CIRCULAR DEPENDENCY REPORT FOR $report_name <<<<<<<<<<\n" >> quality_report.txt
 printf "Directory path: $dir_path \n" >> quality_report.txt
 printf "TS Config file path: $ts_config_path \n" >> quality_report.txt
 printf "Total Circular dependencies count threshold: $circular_dep_count_threshold \n" >> quality_report.txt
 printf "Total Circular dependencies detected: $TOTAL_CIRCULAR_DEPENDENCIES_COUNT \n" >> quality_report.txt
-printf "You can see list of circular dependencies in list_circular_dependencies.txt \n\n" >> quality_report.txt
+printf "You can see list of circular dependencies in circular_dependency_list.zip \n\n" >> quality_report.txt
 
 cp quality_report.txt $BITRISE_DEPLOY_DIR/quality_report.txt || true
 

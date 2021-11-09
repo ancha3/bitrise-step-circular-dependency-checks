@@ -36,6 +36,7 @@ workflows:
           file if you would not specify another value.
         run_if: true
         inputs:
+        - report_name: "DISE"
         - dir_path: "src/index.ts"
         - ts_config_path: "tsconfig.json"
         - circular_dep_count_threshold: 1
