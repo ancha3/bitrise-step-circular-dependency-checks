@@ -29,6 +29,14 @@ toolkit:
     entry_file: step.sh
 
 inputs:
+  - report_name:
+    opts:
+      title: "Report name"
+      summary: "Specify the report name used for generating the quality report and circular dependency list"
+      description: |
+        Set the report name for the specific report. E.g My_Products
+      is_expand: true
+      is_required: true
   - dir_path:
     opts:
       title: "Path to index.ts"
